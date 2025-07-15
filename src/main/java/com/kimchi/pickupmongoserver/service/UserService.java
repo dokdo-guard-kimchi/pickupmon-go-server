@@ -16,12 +16,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @RequiredArgsConstructor
 public class UserService {
     
-    private final UserRepository userRepository;
+    private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     
     public TokenResponse signup(SignupRequest request) {
-        if (userRepository.existsByUserId(request.getUserId())) {
+        if (repository.existsByUserId(request.getUserId())) {
             throw new RuntimeException("User ID already exists");
         }
         
@@ -31,7 +31,7 @@ public class UserService {
         user.setName(request.getName());
         user.setRole(User.Role.USER);
         
-        userRepository.save(user);
+        repository.save(user);
         
         String accessToken = jwtUtil.generateAccessToken(user.getUserId());
         String refreshToken = jwtUtil.generateRefreshToken(user.getUserId());
@@ -40,7 +40,7 @@ public class UserService {
     }
     
     public TokenResponse login(LoginRequest request) {
-        User user = userRepository.findByUserId(request.getUserId())
+        User user = repository.findByUserId(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));
         
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -55,7 +55,16 @@ public class UserService {
     
     public User me() {
         UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userRepository.findByUserId(user.getUsername())
+        return repository.findByUserId(user.getUsername())
             .orElseThrow(() -> new RuntimeException("UserNotFound"));
+    }
+
+    public Integer xp(int xp) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = repository.findByName(userDetails.getUsername())
+            .orElseThrow(() -> new RuntimeException("UserNotFound"));
+        user.setXp(user.getXp() + xp);
+        repository.save(user);
+        return user.getXp();
     }
 }
