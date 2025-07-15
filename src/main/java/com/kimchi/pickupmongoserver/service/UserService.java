@@ -1,6 +1,7 @@
 package com.kimchi.pickupmongoserver.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import com.kimchi.pickupmongoserver.entity.User;
 import com.kimchi.pickupmongoserver.util.JwtUtil;
@@ -53,7 +54,8 @@ public class UserService {
     }
     
     public User me() {
-        return userRepository.findByUserId(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString())
-            .orElseThrow(() -> new RuntimeException("User not found"));
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userRepository.findByUserId(user.getUsername())
+            .orElseThrow(() -> new RuntimeException("UserNotFound"));
     }
 }
