@@ -15,7 +15,7 @@ public class AuthController {
 
     private final UserService userService;
     
-    @PostMapping("/signup")
+    @PostMapping("/sign-up")
     public ResponseEntity<TokenResponse> signup(@RequestBody SignupRequest request) {
         try {
             TokenResponse response = userService.signup(request);
@@ -25,7 +25,7 @@ public class AuthController {
         }
     }
     
-    @PostMapping("/login")
+    @PostMapping("/sign-in")
     public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest request) {
         try {
             TokenResponse response = userService.login(request);
