@@ -61,7 +61,7 @@ public class UserService {
 
     public Integer xp(int xp) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = repository.findByName(userDetails.getUsername())
+        User user = repository.findByUserId(userDetails.getUsername())
             .orElseThrow(() -> new RuntimeException("UserNotFound"));
         user.setXp(user.getXp() + xp);
         repository.save(user);
