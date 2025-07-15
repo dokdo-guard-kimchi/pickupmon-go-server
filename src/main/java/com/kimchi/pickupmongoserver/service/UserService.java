@@ -1,14 +1,15 @@
 package com.kimchi.pickupmongoserver.service;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import com.kimchi.pickupmongoserver.entity.User;
+import com.kimchi.pickupmongoserver.util.JwtUtil;
 import com.kimchi.pickupmongoserver.dto.LoginRequest;
 import com.kimchi.pickupmongoserver.dto.SignupRequest;
 import com.kimchi.pickupmongoserver.dto.TokenResponse;
-import com.kimchi.pickupmongoserver.entity.User;
 import com.kimchi.pickupmongoserver.repository.UserRepository;
-import com.kimchi.pickupmongoserver.util.JwtUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Service
 @RequiredArgsConstructor
@@ -51,8 +52,8 @@ public class UserService {
         return new TokenResponse(accessToken, refreshToken);
     }
     
-    public User findByUserId(String userId) {
-        return userRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public User me() {
+        return userRepository.findByUserId(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString())
+            .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
