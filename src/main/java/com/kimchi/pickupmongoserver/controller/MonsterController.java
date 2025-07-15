@@ -20,7 +20,7 @@ public class MonsterController {
         return ResponseEntity.ok(service.findMonster(type));
     }
 
-    @PostMapping("/catch")
+    @PostMapping(value = "/catch", consumes = "multipart/form-data")
     public ResponseEntity<String> catchMonster(@RequestParam("file") MultipartFile file) {
         String url = photoService.photoToUrl(file);
         service.catchMonster(url);

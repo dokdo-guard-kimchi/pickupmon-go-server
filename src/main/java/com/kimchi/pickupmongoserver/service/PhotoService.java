@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 public class PhotoService {
 
-    private static final String UPLOAD_DIR = "/uploads/";
+    private static final String UPLOAD_DIR = "uploads/";
 
     public String photoToUrl(MultipartFile file) {
         try {
@@ -24,7 +24,7 @@ public class PhotoService {
             Files.createDirectories(filePath.getParent());
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-            return UPLOAD_DIR + fileName;
+            return "/" + UPLOAD_DIR + fileName;
         } catch (IOException e) {
             throw new RuntimeException("File upload failed", e);
         }
