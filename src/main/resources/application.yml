@@ -1,21 +1,19 @@
 spring:
   application:
     name: pickupmon-go-server
-
   datasource:
     url: ${DATABASE_URL}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: false
     open-in-view: false
 
-  app:
-    jwt:
-      secret: ${JWT_SECRET}
-      access: 86400000
-      refresh: 604800000
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    access: 86400000
+    refresh: 604800000
