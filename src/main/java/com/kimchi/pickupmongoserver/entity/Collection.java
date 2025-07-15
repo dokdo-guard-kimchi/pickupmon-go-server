@@ -21,7 +21,6 @@ public class Collection {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "monster_id")
-    private Monster monster;
+    @Column(nullable = false)
+    private String imageUrl;
 }
