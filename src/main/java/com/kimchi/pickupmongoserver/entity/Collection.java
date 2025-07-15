@@ -25,7 +25,7 @@ public class Collection {
     @Schema(description = "컴렉션 소유자")
     private User user;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     @Schema(description = "몬스터 이미지 URL", example = "https://example.com/monster.jpg")
     private String imageUrl;
 }

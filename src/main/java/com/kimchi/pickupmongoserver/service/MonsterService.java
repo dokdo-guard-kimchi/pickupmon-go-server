@@ -30,7 +30,7 @@ public class MonsterService {
 
     public void catchMonster(String url) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByName(userDetails.getUsername())
+        User user = userRepository.findByUserId(userDetails.getUsername())
             .orElseThrow(() -> new RuntimeException("User not found"));
         Collection collection = Collection.builder()
                 .user(user)
