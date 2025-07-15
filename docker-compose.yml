@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  backend:
+    image: pmg3858/pickupmon-go-server:latest
+    container_name: pickupmon_container
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+#      - OPENAI_API_KEY=${OPENAI_API_KEY}
