@@ -1,0 +1,1 @@
+# pickupmon-go-server
