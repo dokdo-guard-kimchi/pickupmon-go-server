@@ -1,0 +1,58 @@
+package com.kimchi.pickupmongoserver.service;
+
+import com.kimchi.pickupmongoserver.dto.LoginRequest;
+import com.kimchi.pickupmongoserver.dto.SignupRequest;
+import com.kimchi.pickupmongoserver.dto.TokenResponse;
+import com.kimchi.pickupmongoserver.entity.User;
+import com.kimchi.pickupmongoserver.repository.UserRepository;
+import com.kimchi.pickupmongoserver.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+    
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
+    
+    public TokenResponse signup(SignupRequest request) {
+        if (userRepository.existsByUserId(request.getUserId())) {
+            throw new RuntimeException("User ID already exists");
+        }
+        
+        User user = new User();
+        user.setUserId(request.getUserId());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setName(request.getName());
+        user.setRole(User.Role.USER);
+        
+        userRepository.save(user);
+        
+        String accessToken = jwtUtil.generateAccessToken(user.getUserId());
+        String refreshToken = jwtUtil.generateRefreshToken(user.getUserId());
+        
+        return new TokenResponse(accessToken, refreshToken);
+    }
+    
+    public TokenResponse login(LoginRequest request) {
+        User user = userRepository.findByUserId(request.getUserId())
+                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+        
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+        
+        String accessToken = jwtUtil.generateAccessToken(user.getUserId());
+        String refreshToken = jwtUtil.generateRefreshToken(user.getUserId());
+        
+        return new TokenResponse(accessToken, refreshToken);
+    }
+    
+    public User findByUserId(String userId) {
+        return userRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+}
