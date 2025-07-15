@@ -1,6 +1,5 @@
 package com.kimchi.pickupmongoserver.service;
 
-import com.kimchi.pickupmongoserver.entity.Collection;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -29,7 +29,7 @@ public class SwaggerConfig {
     private Info apiInfo() {
         return new Info()
             .title("PickUpMon API")
-            .description("Description")
+            .description("몬스터 수집 게임 PickUpMon의 백엔드 API")
             .version("1.0.0");
     }
 }
