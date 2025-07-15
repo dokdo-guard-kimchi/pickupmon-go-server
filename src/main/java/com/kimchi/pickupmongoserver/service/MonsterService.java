@@ -35,6 +35,9 @@ public class MonsterService {
                 .user(user)
                 .monster(monster)
                 .build();
+        if (collectionRepository.existsByUserAndMonster(user, monster)) {
+            throw new RuntimeException("Already caught monster");
+        }
         collectionRepository.save(collection);
     }
 }
