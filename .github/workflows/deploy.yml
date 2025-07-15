@@ -35,7 +35,7 @@ jobs:
         run: docker push pmg3858/pickupmon-go-server:latest
 
       - name: Set up SSH agent
-        uses: webfactory/ssh-agent@v0.8.1
+        uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
 
