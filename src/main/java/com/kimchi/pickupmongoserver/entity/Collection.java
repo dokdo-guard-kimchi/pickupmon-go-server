@@ -2,6 +2,7 @@ package com.kimchi.pickupmongoserver.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "collections")
 @Data
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
 public class Collection {
     @Id
@@ -19,7 +21,6 @@ public class Collection {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "monster_id")
-    private Monster monster;
+    @Column(nullable = false)
+    private String imageUrl;
 }

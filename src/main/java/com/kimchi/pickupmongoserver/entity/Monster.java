@@ -12,9 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Monster {
     @Id
-    @Column(name = "monster_id", nullable = false, unique = true)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MonsterType type;
 

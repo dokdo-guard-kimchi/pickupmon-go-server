@@ -1,11 +1,10 @@
 package com.kimchi.pickupmongoserver.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import com.kimchi.pickupmongoserver.entity.User;
 import com.kimchi.pickupmongoserver.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -14,7 +13,12 @@ public class UserController {
     private final UserService service;
 
     @GetMapping("/me")
-    public User me() {
-        return service.me();
+    public ResponseEntity<User> me() {
+        return ResponseEntity.ok(service.me());
+    }
+
+    @PostMapping("/xp")
+    public ResponseEntity<Integer> xp(@RequestParam int xp) {
+        return ResponseEntity.ok(service.xp(xp));
     }
 }
