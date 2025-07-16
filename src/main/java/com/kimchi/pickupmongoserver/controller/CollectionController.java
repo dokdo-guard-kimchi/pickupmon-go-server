@@ -1,5 +1,6 @@
 package com.kimchi.pickupmongoserver.controller;
 
+import com.kimchi.pickupmongoserver.dto.CollectionResponse;
 import com.kimchi.pickupmongoserver.service.CollectionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,7 +25,7 @@ public class CollectionController {
     @GetMapping
     @Operation(summary = "도감 조회", description = "사용자의 몬스터 도감을 조회합니다")
     @ApiResponse(responseCode = "200", description = "도감 조회 성공")
-    public ResponseEntity<List<String>> getCollections() {
+    public ResponseEntity<List<CollectionResponse>> getCollections() {
         return ResponseEntity.ok(service.getCollections());
     }
 }

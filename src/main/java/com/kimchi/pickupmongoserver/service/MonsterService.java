@@ -28,13 +28,14 @@ public class MonsterService {
         return monster;
     }
 
-    public void catchMonster(String url) {
+    public void catchMonster(String url, String name) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findByUserId(userDetails.getUsername())
             .orElseThrow(() -> new RuntimeException("User not found"));
         Collection collection = Collection.builder()
                 .user(user)
                 .imageUrl(url)
+                .name(name)
                 .build();
         if (collectionRepository.existsByUserAndImageUrl(user, url)) {
             throw new RuntimeException("Already caught monster");

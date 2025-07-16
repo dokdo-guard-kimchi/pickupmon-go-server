@@ -29,12 +29,12 @@ public class MonsterController {
         return ResponseEntity.ok(service.findMonster(type));
     }
 
-    @PostMapping("/catch")
+    @PostMapping(value = "/catch", consumes = "multipart/form-data")
     @Operation(summary = "몬스터 포획", description = "사진을 업로드하여 몬스터를 포획하고 도감에 추가합니다")
     @ApiResponse(responseCode = "200", description = "몬스터 포획 성공")
-    public ResponseEntity<String> catchMonster(@Parameter(description = "몬스터 사진 파일") @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> catchMonster(@Parameter(description = "몬스터 사진 파일") @RequestParam("file") MultipartFile file, @RequestParam("name") String name) {
         String url = photoService.imageToBase64(file);
-        service.catchMonster(url);
+        service.catchMonster(url, name);
         return ResponseEntity.ok("몬스터가 도감에 추가되었습니다.");
     }
 
