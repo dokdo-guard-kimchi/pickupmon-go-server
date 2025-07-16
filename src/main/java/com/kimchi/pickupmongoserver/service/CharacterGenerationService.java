@@ -1,5 +1,6 @@
 package com.kimchi.pickupmongoserver.service;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -27,6 +28,7 @@ public class CharacterGenerationService {
     private final WebClient.Builder webClientBuilder;
 
     @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class CharacterInfo {
         @JsonProperty("waste_type")
         private String wasteType;
@@ -36,6 +38,14 @@ public class CharacterGenerationService {
         
         @JsonProperty("skills")
         private List<String> skills;
+        
+        public CharacterInfo() {}
+        
+        public CharacterInfo(String wasteType, String characterName, List<String> skills) {
+            this.wasteType = wasteType;
+            this.characterName = characterName;
+            this.skills = skills;
+        }
     }
 
     public CharacterInfo generateCharacterFromTrashImage(String imageUrl) {
