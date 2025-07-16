@@ -38,4 +38,13 @@ public class MonsterController {
         service.catchMonster(url);
         return ResponseEntity.ok("몬스터가 도감에 추가되었습니다.");
     }
+
+    @PostMapping("/generate")
+    @Operation(summary = "쓰레기 사진으로 캐릭터 생성", description = "쓰레기 사진을 업로드하여 AI가 캐릭터를 생성합니다")
+    @ApiResponse(responseCode = "200", description = "캐릭터 생성 성공")
+    public ResponseEntity<Monster> generateMonster(@Parameter(description = "쓰레기 사진 파일") @RequestParam("file") MultipartFile file) {
+        String imageUrl = photoService.photoToUrl(file);
+        Monster monster = service.generateMonsterFromTrash(imageUrl);
+        return ResponseEntity.ok(monster);
+    }
 }

@@ -1,31 +1,42 @@
 package com.kimchi.pickupmongoserver.service;
 
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class PhotoService {
 
-    private static final String UPLOAD_DIR = "uploads/";
+    private final Storage storage;
+
+    @Value("${gcp.storage.bucket-name}")
+    private String bucketName;
 
     public String photoToUrl(MultipartFile file) {
         try {
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            Path filePath = Paths.get(UPLOAD_DIR + fileName);
+            BlobId blobId = BlobId.of(bucketName, fileName);
+            BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+                    .setContentType(file.getContentType())
+                    .build();
 
-            Files.createDirectories(filePath.getParent());
-            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-            return "/" + UPLOAD_DIR + fileName;
+            Blob blob = storage.create(blobInfo, file.getBytes());
+            
+            return String.format("https://storage.googleapis.com/%s/%s", bucketName, fileName);
         } catch (IOException e) {
-            throw new RuntimeException("File upload failed", e);
+            log.error("파일 업로드 실패: {}", e.getMessage());
+            throw new RuntimeException("File upload to GCP failed", e);
         }
     }
 }

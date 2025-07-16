@@ -24,3 +24,11 @@ app:
     secret: ${JWT_SECRET}
     access: 86400000
     refresh: 604800000
+
+gcp:
+  storage:
+    bucket-name: ${GCP_STORAGE_BUCKET_NAME}
+    credentials-file-path: ${GCP_CREDENTIALS_FILE_PATH}
+
+openai:
+  api-key: ${OPENAI_API_KEY:}

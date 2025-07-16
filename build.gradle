@@ -44,6 +44,15 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
 
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+    
+    // Google Cloud Storage
+    implementation 'com.google.cloud:google-cloud-storage:2.36.1'
+    
+    // OpenAI API (Unofficial Java SDK)
+    implementation 'com.theokanning.openai-gpt3-java:service:0.18.2'
+    
+    // HTTP Client for OpenAI API calls
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
 
 tasks.named('test') {
